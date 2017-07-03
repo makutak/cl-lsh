@@ -31,5 +31,6 @@ exec ros -Q -- $0 "$@"
              ((string= args "exit") (return))))))
 
 (defun main (&rest argv)
+  (declare (ignore argv))
   (lsh-loop))
 ;;; vim: set ft=lisp lisp:
