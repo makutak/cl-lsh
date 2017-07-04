@@ -12,7 +12,7 @@ exec ros -Q -- $0 "$@"
   (:use :cl))
 (in-package :ros.script.main.3707967474)
 
-(defvar *builtin-str* '("cd" "help" "exit"))
+(defvar *builtin-str* '("cd" "pwd"  "help" "exit"))
 
 (defun lsh-help ()
   (format t "Stephen Brennan's LSH~%")
@@ -22,14 +22,19 @@ exec ros -Q -- $0 "$@"
     (format t "~3t~a~%" str))
   (format t "Use the man command for information on other programs.~%"))
 
+(defun lsh-pwd ()
+  (format t "~A~%" (sb-posix:getcwd)))
+
 (defun lsh-loop ()
   (loop
      (format *query-io* "> ")
      (finish-output *query-io*)
      (let ((args (read-line *query-io* nil)))
        (cond ((string= args "help") (lsh-help))
-             ((string= args "exit") (return))
-             ((null args) (return))
+             ((string= args "pwd") (lsh-pwd))
+             ((or (string= args "exit")
+                  (null args))
+              (return))
              (t (format t "~a~%" args))))))
 
 (defun main (&rest argv)
