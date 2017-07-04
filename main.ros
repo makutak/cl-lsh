@@ -23,7 +23,7 @@ exec ros -Q -- $0 "$@"
   (format t "Use the man command for information on other programs.~%"))
 
 (defun lsh-pwd ()
-  (format t "~A~%" (sb-posix:getcwd)))
+  (format t "~a~%" (sb-posix:getcwd)))
 
 (defun lsh-loop ()
   (loop
