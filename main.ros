@@ -26,9 +26,10 @@ exec ros -Q -- $0 "$@"
   (loop
      (format *query-io* "> ")
      (finish-output *query-io*)
-     (let ((args (read-line *query-io*)))
+     (let ((args (read-line *query-io* nil)))
        (cond ((string= args "help") (lsh-help))
              ((string= args "exit") (return))
+             ((null args) (return))
              (t (format t "~a~%" args))))))
 
 (defun main (&rest argv)
