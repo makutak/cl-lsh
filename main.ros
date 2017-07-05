@@ -12,6 +12,10 @@ exec ros -Q -- $0 "$@"
   (:use :cl))
 (in-package :ros.script.main.3707967474)
 
+(ql:quickload '(:uiop :split-sequence) :silent t)
+
+(import 'split-sequence:split-sequence)
+
 (defvar *builtin-str* '("cd" "pwd"  "help" "exit"))
 
 (defun lsh-help ()
@@ -25,17 +29,28 @@ exec ros -Q -- $0 "$@"
 (defun lsh-pwd ()
   (format t "~a~%" (sb-posix:getcwd)))
 
+(defun lsh-cd (dest-dir)
+  (ignore-errors (sb-posix:chdir dest-dir)))
+
+(defun lsh-read ()
+  (split-sequence #\Space (read-line *query-io* nil)))
+
+(defun lsh-parse (args)
+  (cond ((equal (first args) "help") (lsh-help))
+        ((equal (first args) "pwd") (lsh-pwd))
+        ((equal (first args) "cd") (lsh-cd (second args)))
+        (t (format t "~a~%" (first args)))))
+
 (defun lsh-loop ()
   (loop
      (format *query-io* "> ")
      (finish-output *query-io*)
-     (let ((args (read-line *query-io* nil)))
-       (cond ((string= args "help") (lsh-help))
-             ((string= args "pwd") (lsh-pwd))
-             ((or (string= args "exit")
-                  (null args))
-              (return))
-             (t (format t "~a~%" args))))))
+     (let ((input (lsh-read)))
+       (when (or
+              (equal (first input) "exit")
+              (null (first input)))
+         (return))
+       (lsh-parse input))))
 
 (defun main (&rest argv)
   (declare (ignore argv))
