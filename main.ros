@@ -16,14 +16,14 @@ exec ros -Q -- $0 "$@"
 
 (import 'split-sequence:split-sequence)
 
-(defvar *builtin-str* '("cd" "pwd"  "help" "exit"))
+(defvar *builtin-commands* '("cd" "pwd"  "help" "exit"))
 
 (defun lsh-help ()
   (format t "Stephen Brennan's LSH~%")
   (format t "Type program names and arguments, and hit enter.~%")
   (format t "The following are built in:~%")
-  (dolist (str *builtin-str*)
-    (format t "~3t~a~%" str))
+  (dolist (command *builtin-commands*)
+    (format t "~3t~a~%" command))
   (format t "Use the man command for information on other programs.~%"))
 
 (defun lsh-pwd ()
@@ -31,7 +31,7 @@ exec ros -Q -- $0 "$@"
 
 (defun lsh-cd (dest-dir)
   (let ((dest
-         (if (null dest-dir)
+         (if (= (length dest-dir) 0)
              (directory-namestring (user-homedir-pathname))
              dest-dir)))
     (ignore-errors (sb-posix:chdir dest))))
