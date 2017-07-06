@@ -30,7 +30,11 @@ exec ros -Q -- $0 "$@"
   (format t "~a~%" (sb-posix:getcwd)))
 
 (defun lsh-cd (dest-dir)
-  (ignore-errors (sb-posix:chdir dest-dir)))
+  (let ((dest
+         (if (null dest-dir)
+             (directory-namestring (user-homedir-pathname))
+             dest-dir)))
+    (ignore-errors (sb-posix:chdir dest))))
 
 (defun lsh-read ()
   (split-sequence #\Space (read-line *query-io* nil)))
