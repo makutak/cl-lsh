@@ -29,11 +29,14 @@ exec ros -Q -- $0 "$@"
 (defun lsh-pwd ()
   (format t "~a~%" (sb-posix:getcwd)))
 
-(defun lsh-cd (dest-dir)
+(defun remove-blank (args)
+  (remove-if #'(lambda (arg) (= (length arg) 0)) args))
+
+(defun lsh-cd (args)
   (let ((dest
-         (if (= (length dest-dir) 0)
+         (if (null (remove-blank args))
              (directory-namestring (user-homedir-pathname))
-             dest-dir)))
+             (first (remove-blank args)))))
     (ignore-errors (sb-posix:chdir dest))))
 
 (defun lsh-read ()
@@ -42,7 +45,7 @@ exec ros -Q -- $0 "$@"
 (defun lsh-parse (args)
   (cond ((equal (first args) "help") (lsh-help))
         ((equal (first args) "pwd") (lsh-pwd))
-        ((equal (first args) "cd") (lsh-cd (second args)))
+        ((equal (first args) "cd") (lsh-cd (cdr args)))
         (t (format t "~a~%" (first args)))))
 
 (defun lsh-loop ()
