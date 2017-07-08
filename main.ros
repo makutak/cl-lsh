@@ -45,7 +45,7 @@ exec ros -Q -- $0 "$@"
 (defun lsh-parse (args)
   (cond ((equal (first args) "help") (lsh-help))
         ((equal (first args) "pwd") (lsh-pwd))
-        ((equal (first args) "cd") (lsh-cd (cdr args)))
+        ((equal (first args) "cd") (lsh-cd (rest args)))
         (t (format t "~a~%" (first args)))))
 
 (defun lsh-loop ()
