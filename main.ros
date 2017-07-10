@@ -12,7 +12,9 @@ exec ros -Q -- $0 "$@"
   (:use :cl))
 (in-package :ros.script.main.3707967474)
 
-(ql:quickload '(:uiop :split-sequence) :silent t)
+(ql:quickload '(:uiop
+                :split-sequence
+                :inferior-shell) :silent t)
 
 (import 'split-sequence:split-sequence)
 
@@ -39,12 +41,8 @@ exec ros -Q -- $0 "$@"
              (first (remove-blank args)))))
     (ignore-errors (sb-posix:chdir dest))))
 
-(defun lsh-launch ()
-  (let ((pid (sb-posix:fork)))
-  (cond
-   ((zerop pid) (write-line "This is the new process."))
-   ((plusp pid) (write-line "This is the original process."))
-   (t           (error "Something went wrong while forking.")))))
+(defun lsh-launch (commands)
+  (ignore-errors (inferior-shell:run commands)))
 
 (defun lsh-read ()
   (split-sequence #\Space (read-line *query-io* nil)))
@@ -53,7 +51,7 @@ exec ros -Q -- $0 "$@"
   (cond ((equal (first args) "help") (lsh-help))
         ((equal (first args) "pwd") (lsh-pwd))
         ((equal (first args) "cd") (lsh-cd (rest args)))
-        (t (format t "~a~%" (first args)))))
+        (t (lsh-launch args))))
 
 (defun lsh-loop ()
   (loop
