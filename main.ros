@@ -8,10 +8,6 @@ exec ros -Q -- $0 "$@"
   ;;#+quicklisp (ql:quickload '() :silent t)
   )
 
-(defpackage :ros.script.main.3707967474
-  (:use :cl))
-(in-package :ros.script.main.3707967474)
-
 (ql:quickload '(:uiop
                 :split-sequence
                 :inferior-shell) :silent t)
@@ -42,8 +38,11 @@ exec ros -Q -- $0 "$@"
     (ignore-errors (sb-posix:chdir dest))))
 
 (defun lsh-launch (commands)
-                                        ;(ignore-errors (inferior-shell:run commands))
-  (sb-ext:run-program (first commands) '() :output *standard-output* :search t :wait nil))
+  (sb-ext:run-program (first commands) (remove-blank (rest commands))
+                      :output *standard-output*
+                      :search t
+                      :error :output
+                      :wait t))
 
 (defun lsh-read ()
   (split-sequence #\Space (read-line *query-io* nil)))
