@@ -42,7 +42,8 @@ exec ros -Q -- $0 "$@"
     (ignore-errors (sb-posix:chdir dest))))
 
 (defun lsh-launch (commands)
-  (ignore-errors (inferior-shell:run commands)))
+                                        ;(ignore-errors (inferior-shell:run commands))
+  (sb-ext:run-program (first commands) '() :output *standard-output* :search t :wait nil))
 
 (defun lsh-read ()
   (split-sequence #\Space (read-line *query-io* nil)))
