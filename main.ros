@@ -40,6 +40,7 @@ exec ros -Q -- $0 "$@"
 (defun lsh-launch (commands)
   (let ((process (sb-ext:run-program (first commands)
                                      (remove-blank (rest commands))
+                                     :input "/dev/tty"
                                      :output *standard-output*
                                      :search t
                                      :error :output
