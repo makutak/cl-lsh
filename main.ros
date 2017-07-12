@@ -38,11 +38,15 @@ exec ros -Q -- $0 "$@"
     (ignore-errors (sb-posix:chdir dest))))
 
 (defun lsh-launch (commands)
-  (sb-ext:run-program (first commands) (remove-blank (rest commands))
-                      :output *standard-output*
-                      :search t
-                      :error :output
-                      :wait t))
+  (let ((process (sb-ext:run-program (first commands)
+                                     (remove-blank (rest commands))
+                                     :output *standard-output*
+                                     :search t
+                                     :error :output
+                                     :wait t)))
+    (sb-ext:process-wait process)
+    (sb-ext:process-close process)
+    (sb-ext:process-exit-code process)))
 
 (defun lsh-read ()
   (split-sequence #\Space (read-line *query-io* nil)))
