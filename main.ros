@@ -27,30 +27,28 @@ exec ros -Q -- $0 "$@"
 (defun lsh-pwd ()
   (format t "~a~%" (sb-posix:getcwd)))
 
-(defun remove-blank (args)
-  (remove-if #'(lambda (arg) (= (length arg) 0)) args))
-
 (defun lsh-cd (args)
   (let ((dest
-         (if (null (remove-blank args))
+         (if (null args)
              (directory-namestring (user-homedir-pathname))
-             (first (remove-blank args)))))
+             (first args))))
     (ignore-errors (sb-posix:chdir dest))))
 
 (defun lsh-launch (commands)
-  (let ((process (sb-ext:run-program (first commands)
-                                     (remove-blank (rest commands))
-                                     :input "/dev/tty"
-                                     :output *standard-output*
-                                     :search t
-                                     :error :output
-                                     :wait t)))
-    (sb-ext:process-wait process)
-    (sb-ext:process-close process)
-    (sb-ext:process-exit-code process)))
+  (sb-ext:run-program (first commands)
+                      (rest commands)
+                      :input t
+                      :output *standard-output*
+                      :search t
+                      :error :output
+                      :wait t))
+
+(defun remove-blank (args)
+  (remove-if #'(lambda (arg) (= (length arg) 0)) args))
 
 (defun lsh-read ()
-  (split-sequence #\Space (read-line *query-io* nil)))
+  (remove-blank
+   (split-sequence #\Space (read-line *query-io* nil))))
 
 (defun lsh-parse (args)
   (cond ((equal (first args) "help") (lsh-help))
