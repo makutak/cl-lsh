@@ -14,7 +14,7 @@ exec ros -Q -- $0 "$@"
 
 (import 'split-sequence:split-sequence)
 
-(defvar *builtin-commands* '("cd" "pwd"  "help" "exit"))
+(defvar *builtin-commands* '("cd" "pwd" "help" "exit"))
 
 (defun lsh-help ()
   (format t "Stephen Brennan's LSH~%")
