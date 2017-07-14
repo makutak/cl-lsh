@@ -35,13 +35,14 @@ exec ros -Q -- $0 "$@"
     (ignore-errors (sb-posix:chdir dest))))
 
 (defun lsh-launch (commands)
-  (sb-ext:run-program (first commands)
-                      (rest commands)
-                      :input t
-                      :output *standard-output*
-                      :search t
-                      :error :output
-                      :wait t))
+  (ignore-errors
+    (sb-ext:run-program (first commands)
+                        (rest commands)
+                        :input t
+                        :output *standard-output*
+                        :search t
+                        :error :output
+                        :wait t)))
 
 (defun remove-blank (args)
   (remove-if #'(lambda (arg) (= (length arg) 0)) args))
