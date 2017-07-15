@@ -48,8 +48,7 @@ exec ros -Q -- $0 "$@"
   (remove-if #'(lambda (arg) (= (length arg) 0)) args))
 
 (defun lsh-read ()
-  (remove-blank
-   (split-sequence #\Space (read-line *query-io* nil))))
+  (split-sequence #\Space (read-line *query-io* nil)))
 
 (defun lsh-parse (args)
   (cond ((equal (first args) "help") (lsh-help))
@@ -66,7 +65,7 @@ exec ros -Q -- $0 "$@"
               (equal (first input) "exit")
               (null (first input)))
          (return))
-       (lsh-parse input))))
+       (lsh-parse (remove-blank input)))))
 
 (defun main (&rest argv)
   (declare (ignore argv))
