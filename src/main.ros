@@ -10,7 +10,7 @@ exec ros -Q -- $0 "$@"
 
 (ql:quickload '(:uiop
                 :split-sequence
-                :inferior-shell) :silent t)
+                :cl-readline) :silent t)
 
 (import 'split-sequence:split-sequence)
 
