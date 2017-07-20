@@ -1,10 +1,9 @@
 # cl-lsh
 
 <https://github.com/brenns10/lsh>をCommon Lispで書いたものです。   
-要するにただのシェルです。  
+ただのシェルです。  
 SBCL依存です。それ以外の処理系では動きません。  
 詳しくは<https://github.com/brenns10/lsh>を見てください。  
-パイプやリダイレクトはできません。
 
 ## 使い方
 roswellスクリプトなのでroswellをインストールしてください。  
