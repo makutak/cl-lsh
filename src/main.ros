@@ -36,11 +36,10 @@ exec ros -Q -- $0 "$@"
 
 (defun lsh-launch (commands)
   (ignore-errors
-    (sb-ext:run-program (first commands)
-                        (rest commands)
+    (sb-ext:run-program "/bin/sh"
+                        (list "-c" (format nil "~{~a~^ ~}" commands))
                         :input t
                         :output *standard-output*
-                        :search t
                         :error :output
                         :wait t)))
 
