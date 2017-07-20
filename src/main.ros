@@ -10,8 +10,7 @@ exec ros -Q -- $0 "$@"
 
 (ql:quickload '(:uiop
                 :split-sequence
-                :cl-readline
-                :trivial-shell) :silent t)
+                :cl-readline) :silent t)
 
 (import 'split-sequence:split-sequence)
 
@@ -36,17 +35,14 @@ exec ros -Q -- $0 "$@"
     (ignore-errors (sb-posix:chdir dest))))
 
 (defun lsh-launch (commands)
-  (let ((cmd (format nil "~{~a~^ ~}" commands)))
-    (princ
-     (trivial-shell:shell-command cmd))))
-  ;; (ignore-errors
-  ;;   (sb-ext:run-program (first commands)
-  ;;                       (rest commands)
-  ;;                       :input t
-  ;;                       :output *standard-output*
-  ;;                       :search t
-  ;;                       :error :output
-  ;;                       :wait t)))
+  (ignore-errors
+    (sb-ext:run-program (first commands)
+                        (rest commands)
+                        :input t
+                        :output *standard-output*
+                        :search t
+                        :error :output
+                        :wait t)))
 
 (defun remove-blank (args)
   (remove-if #'(lambda (arg) (= (length arg) 0)) args))
