@@ -11,7 +11,7 @@ roswellのインストール方法については[こちら](https://github.com/
 
 * ``` ros install makutak/cl-lsh```
 
-* ``` /path/to/roswell/bin/cl-lsh ```
+* ``` $HOME/.roswell/bin/cl-lsh ```
 
 * 適当にコマンド打つ。
 
