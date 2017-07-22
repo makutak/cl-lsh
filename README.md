@@ -9,11 +9,9 @@ SBCL依存です。それ以外の処理系では動きません。
 roswellスクリプトなのでroswellをインストールしてください。  
 roswellのインストール方法については[こちら](https://github.com/roswell/roswell)。
 
-* ``` git clone git@github.com:makutak/cl-lsh.git```
+* ``` ros install makutak/cl-lsh```
 
-* ``` cd cl-lsh/src/ ```
-
-* ``` ./main.ros ```
+* ``` /path/to/roswell/bin/cl-lsh ```
 
 * 適当にコマンド打つ。
 
