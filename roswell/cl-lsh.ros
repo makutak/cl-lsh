@@ -47,7 +47,7 @@ exec ros -Q -- $0 "$@"
   (remove-if #'(lambda (arg) (= (length arg) 0)) args))
 
 (defun lsh-read ()
-  (split-sequence #\Space (read-line *query-io* nil)))
+  (split-sequence #\Space (rl:readline :prompt "> " :add-history t)))
 
 (defun lsh-parse (args)
   (cond ((equal (first args) "help") (lsh-help))
@@ -57,8 +57,6 @@ exec ros -Q -- $0 "$@"
 
 (defun lsh-loop ()
   (loop
-     (format *query-io* "> ")
-     (finish-output *query-io*)
      (let ((input (lsh-read)))
        (when (or
               (equal (first input) "exit")
